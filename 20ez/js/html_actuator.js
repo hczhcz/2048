@@ -62,7 +62,16 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.applyClasses(wrapper, classes);
 
   inner.classList.add("tile-inner");
-  inner.textContent = tile.value;
+
+  if (tile.value >= 1099511627776) {
+    inner.textContent = tile.value / 1099511627776 + ' Ti';
+  } else if (tile.value >= 1073741824) {
+    inner.textContent = tile.value / 1073741824 + ' Gi';
+  } else if (tile.value >= 1048576) {
+    inner.textContent = tile.value / 1048576 + ' Mi';
+  } else {
+    inner.textContent = tile.value;
+  }
 
   if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first
