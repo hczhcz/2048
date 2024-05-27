@@ -67,27 +67,31 @@ GameManager.prototype.addRandomTile = function () {
       var cell = this.grid.randomAvailableCell();
 
       function check(x, y, dx, dy) {
-        if (x < 0 || y < 0 || x >= self.grid.size || y >= self.grid.size) return;
+        if (x < 0 || y < 0 || x >= self.grid.size || y >= self.grid.size) {
+          return;
+        }
 
         if (
           !!self.grid.cells[cell.x + x]
-          &&
-          !!self.grid.cells[cell.x + x][cell.y + y]
+          && !!self.grid.cells[cell.x + x][cell.y + y]
         ) {
           var tocheck = self.grid.cells[cell.x + x][cell.y + y];
+
           if (Math.random() < 0.8 && tocheck.value < bvalue) {
             bcell = cell;
             bvalue = tocheck.value;
           }
-        } else check(x + dx, y + dy, dx, dy);
+        } else {
+          check(x + dx, y + dy, dx, dy);
+        }
       }
 
-      check(-1, 0, -1, 0);
       check(1, 0, 1, 0);
-      check(0, -1, 0, -1);
       check(0, 1, 0, 1);
 
-      if (bvalue == 2147483647) {bvalue = 2;}
+      if (bvalue == 2147483647) {
+        bvalue = 2;
+      }
     }
 
     var tile = new Tile(bcell, bvalue);

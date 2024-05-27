@@ -153,23 +153,24 @@ GameManager.prototype.move = function (direction) {
     });
   });
 
-  //if (moved) {
-    if (!this.movesAvailable()) {
-      this.over = true; // Game over!
-    }
+  if (!this.movesAvailable()) {
+    this.over = true; // Game over!
+  }
 
-    this.actuate();
-  //}
+  this.actuate();
 
   return moved;
 };
 
 // Insert a new tile on
 GameManager.prototype.drop = function (pos) {
-  if (this.isGameTerminated()) return; // Don't do anything if the game's over
+  if (this.isGameTerminated()) {
+    return; // Don't do anything if the game's over
+  }
 
   if (this.grid.cellsAvailable()) {
     var value = Math.random() < 0.9 ? 16 : 32;
+
     if (pos == "random") {
       var cell = this.grid.randomAvailableCell();
     } else {
@@ -178,25 +179,22 @@ GameManager.prototype.drop = function (pos) {
 
     if (this.grid.cellAvailable(cell)) {
       var tile = new Tile(cell, value);
-      this.grid.insertTile(tile);
 
+      this.grid.insertTile(tile);
       this.actuate();
+
       while (
         this.movesAvailable()
-        &&
-        !this.move(Math.floor(Math.random() * 4))
-        &&
-        !this.isGameTerminated()
-      ) {};
+        && !this.move(Math.floor(Math.random() * 4))
+        && !this.isGameTerminated()
+      ) {}
     }
   }
 
   while (
     !this.grid.cellsAvailable()
-    &&
-    !this.isGameTerminated()
-    &&
-    this.move(Math.floor(Math.random() * 4))
+    && !this.isGameTerminated()
+    && this.move(Math.floor(Math.random() * 4))
   ) {}
 }
 
